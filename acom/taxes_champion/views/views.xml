@@ -1,0 +1,141 @@
+<odoo>
+  <data>
+
+    <record id="CPTax_form_view" model="ir.ui.view"> 
+      <field name="name">CPTax_form_view</field> 
+      <field name="model">account.tax</field> 
+      <field name="inherit_id" ref="account.view_tax_form"/> 
+      <field name="arch" type="xml">
+        
+        <xpath expr="//field[@name='type_tax_use']" position="after">
+          <field name="cp_sales_type" />
+          <field name="cp_sro_no" />
+          <field name="cp_item_sr_no" />
+          <field name="cp_item_desc" />
+          <field name="fbr_tax_code" />
+        </xpath>
+
+        <xpath expr="//field[@name='children_tax_ids']" position="attributes">
+          <attribute name="attrs">{'invisible':['|', ('amount_type','=','werw'), ('type_tax_use','=','wer')]}</attribute>
+        </xpath>
+
+        <xpath expr="//field[@name='refund_account_id']" position="after">
+          <field name="enable_child_tax" />
+        </xpath>
+
+      </field> 
+    </record>
+
+    <record id="customer_invoices_bc_form_view" model="ir.ui.view"> 
+        <field name="name">customer_invoices_bc_form_view</field> 
+        <field name="model">account.invoice</field> 
+        <field name="inherit_id" ref="account.invoice_form"/> 
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='invoice_line_tax_ids']" position="replace">
+              <field name="bcube_taxes_id"  widget="many2many_tags" context="{'type':parent.type}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]" options="{'no_create': True}"/>
+              <!-- <field name="bcube_amount_tax"/> -->
+            </xpath>
+            <xpath expr="//field[@name='date_invoice']" position="replace">
+              <field name="date_invoice"/>
+            </xpath>
+        </field> 
+    </record>
+
+    <record id="sales_invoice_extension" model="ir.ui.view"> 
+        <field name="name">sales_invoice_extension</field> 
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='187']" position="after">
+                <button name="generate_lines" type="object" string="Generate Lines" />
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']" position="before">
+                <page string="Import Invoice Lines" name="import_invoice_lines">
+                    <field name="import_tree" nolabel="1" widget="one2many_list">
+                        <tree string="Invoice Lines" editable="bottom">
+                            <field name="product_id" />
+                            <field name="descrip" />
+                            <field name="account" />
+                            <field name="quantity" />
+                            <field name="unit_price" />
+                            <field name="line_taxes" widget="many2many_tags" context="{'type':parent.type}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]" options="{'no_create': True}"/>
+                            <field name="tax_amount" />
+                            <field name="price_subtotal" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="replace">
+                <field name="amount_subtoal" />
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="vendor_form_extension" model="ir.ui.view"> 
+        <field name="name">vendor_form_extension</field> 
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+                <field name="assessed" />
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="after">
+                <field name="per_unit_cost" />
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='invoice_line_tax_ids']" position="replace">
+
+                <field name="bcube_taxes_id" widget="many2many_tags" context="{'type':parent.type}" domain="[('type_tax_use','=','purchase'),('company_id', '=', parent.company_id)]" options="{'no_create': True}"/>
+                <!-- <field name="bcube_amount_tax"/> -->
+                
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="string">Declared</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_invoice_open']" position="after">
+                <button name="validator" type="object" string="Validation" class="oe_highlight" />
+            </xpath>
+
+            <xpath expr="//page[2]" position="before">
+                <page name="other_costs" string="Other Costs">
+
+                    <field name="others_tree" nolabel="1" widget="one2many_list">
+                        <tree string="Other Costs" editable="bottom">
+                            <field name="date" />
+                            <field name="expense_type" />
+                            <field name="vendor" />
+                            <field name="bank" />
+                            <field name="reference" />
+                            <field name="amount" />
+                        </tree>
+                    </field>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="tax_form_extension" model="ir.ui.view"> 
+        <field name="name">tax_form_extension</field> 
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='account_id']" position="after">
+                <field name="counter_tax" />
+            </xpath>
+
+        </field>
+    </record>
+
+  </data>
+</odoo>

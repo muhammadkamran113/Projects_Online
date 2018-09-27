@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="sale_report">
+
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+
+                        <div class="page">
+
+                            <style>
+                                .report-container {
+                                    width: 1000px;
+                                    margin: 0px auto;
+                                }
+                                h1 {
+                                    width: 100%;
+                                    text-align: center;
+                                    float: left;
+                                    color: #bbb;
+                                    font-size: 45px;
+                                    margin-bottom: 40px;
+                                }
+                                .date {
+                                    width: 70%;
+                                    margin: 0px auto;
+                                }
+
+                                .to {
+                                    width: 54%;
+                                    float: left;
+                                    margin-left: 71px;
+                                    margin-bottom: 35px;
+                                }
+
+                                .to .solid {
+                                    width: 27%;
+                                    float: left;
+                                    font-weight: bold;
+                                }
+
+                                .to .liquid {
+                                    width: 65%;
+                                    float: left;
+                                }
+
+                                .from {
+                                    width: 35%;
+                                    float: left;
+                                }
+
+                                .from .solid {
+                                    width: 40%;
+                                    float: left;
+                                    font-weight: bold;
+                                }
+
+                                .from .liquid {
+                                    width: 60%;
+                                    float: left;
+                                }
+
+                                .balances {
+                                    width: 70%;
+                                    margin: 0px auto;
+                                }
+
+                                .open {
+                                    width: 100%;
+                                    float: left;
+                                }
+
+                                .open .solid {
+                                    width: 42%;
+                                    float: left;
+                                    font-weight: bold;
+                                    padding: 13px 0px 13px 0px;
+                                }
+
+                                .open .liquid {
+                                    width: 25%;
+                                    float: left;
+                                    text-align: center;
+                                    padding: 13px 0px 13px 0px;
+                                }
+                                .sub {
+
+                                }
+                                .sub .solid {
+                                    width: 15%;
+                                    margin: 0px 0px 0px 40px;
+                                }
+                                .sub .liquid {
+                                    width: 15%;
+                                }
+                                .sub .no_head {
+                                    font-weight: normal;
+                                }
+                            </style>
+
+                            <div class="report_container">
+                            
+                                <h1>Sales Tax Report</h1>
+
+                                <div class="date">
+                                    <div class="to">
+                                        <span class="solid">Date From:</span> 
+                                        <span class="liquid" t-esc="form"></span>
+                                    </div>
+                                    <div class="from">
+                                        <span class="solid">Date To:</span> 
+                                        <span class="liquid" t-esc="to"></span>
+                                    </div>
+                                </div>
+
+                                <div class="balances">
+
+                                    <div class="open">
+                                        <span class="solid">Opening</span>
+                                        <span class="liquid" t-esc="opeing_balace"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Add: Input</span>
+                                        <span class="liquid"></span>
+                                    </div>
+
+                                    <div class="open sub">
+                                        <span class="solid no_head">Sales Tax</span>
+                                        <span class="liquid" t-esc="vendor_sales"></span>
+                                    </div>
+
+                                    <div class="open sub">
+                                        <span class="solid no_head">Additional Tax</span>
+                                        <span class="liquid" t-esc="vendor_additional"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Less: Output</span>
+                                        <span class="liquid" t-esc="customer_sales"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Closing</span>
+                                        <span class="liquid" style="border-top: 1px solid" t-esc="closing_balance"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Remaining Sale Value</span>
+                                        <span class="liquid" t-esc="remaining_sales_value"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Taxable Stock in Hand (Current Price) </span>
+                                        <span class="liquid" t-esc="stock_value"></span>
+                                    </div>
+
+                                    <div class="open">
+                                        <span class="solid">Difference</span>
+                                        <span class="liquid" t-esc="difference"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div><!--end of page-->
+                </t>
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>

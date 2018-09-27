@@ -1,0 +1,53 @@
+<odoo>
+  <data>
+
+
+  <record id="view_account_taxes_hir_withparent_form" model="ir.ui.view">
+        <field name="name">view_account_taxes_hir_withparent_form</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+          <field name="name" position="after">
+            <field name="parent_id" context="{'show_parent_account':True}"/>
+          </field>
+        </field>
+    </record>
+    
+    <record id="account.action_tax_form" model="ir.actions.act_window">
+      <field name="context">{'show_parent_account':True}</field>
+    </record>
+        
+           <menuitem action="account.action_tax_form" id="menu_action_tax_form" 
+        parent="account.menu_finance_entries" sequence="2" />
+
+        
+           <record id="view_taxes_hir_withparent_tree" model="ir.ui.view">
+            <field name="name">view_taxes_hir_withparent_tree</field>
+            <field name="model">account.tax</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Chart of accounts" toolbar="1">
+                  <field name="name"/>
+                  <field name="type_tax_use"/>
+                  <field name="description" string="Short Name"/>
+                  <field name="testing_tax_of_carts" string="Group Name"/>
+                  <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+    
+    
+    
+    <record id="action_open_taxes_hir_withparent_tree" model="ir.actions.act_window">
+        <field name="name">Chart of Account Heirarchy</field>
+        <field name="res_model">account.tax</field>
+        <field name="view_type">tree</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_taxes_hir_withparent_tree"/>
+        <field name="domain">[('parent_id','=',False)]</field>
+        <field name="context">{'show_parent_account':True}</field>
+    </record>
+    <menuitem name="Chart of Taxes Hierarchy" id="taxes_chart_champion.menu_12" parent="account.menu_finance_entries" action="action_open_taxes_hir_withparent_tree" sequence="22"/>
+
+  </data>
+</odoo>

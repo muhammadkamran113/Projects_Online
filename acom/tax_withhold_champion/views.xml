@@ -1,0 +1,134 @@
+<?xml version="1.0"?> 
+<odoo> 
+
+	<record id="view_form_tax" model="ir.ui.view"> 
+		<field name="name">view_form_tax</field> 
+		<field name="model">tax.withold</field> 
+		<field name="type">form</field> 
+			<field name="arch" type="xml">
+			<form string="Summary">
+				<header>
+	            	<button name="epay" string="ePayment" type="object" class="oe_highlight"/>
+	            </header>
+				<sheet>
+					<group name="top">
+						<group >
+							<field name="supplier"/>
+							<field name="date"/>
+							<field name="amount"/>
+							<field name="ref_no"/>
+						</group>
+						<group>
+							<field name="tax"/>
+							<field name="tax_name"/>
+							<field name="challan_no"/>
+							<field name="paid"/>
+						</group>/
+					</group>
+				</sheet>
+			</form> 
+		</field> 
+	</record>
+
+	<record id="view_tree_tax" model="ir.ui.view"> 
+			<field name="name">view_tree_tax</field> 
+			<field name="model">tax.withold</field> 
+			<field name="type">tree</field> 
+			<field name="arch" type="xml"> 
+			<tree> 
+				<field name="supplier"/>
+				<field name="date"/>
+				<field name="ref_no"/>
+			</tree> 
+			</field> 
+	</record>
+
+<record id="tax_withhold_report_wizard_form_view" model="ir.ui.view">
+	<field name="name">tax_withhold_report_wizard_form_view</field>
+	<field name="model">tax.withold.wizard</field>
+	<field name="arch" type="xml">
+		<form string="Report">
+			<group name="group_top">
+				<group name="group_left"> 
+						<field name="challan_no"/>
+				</group>
+				<group name="group_right">
+						<field name="paid"/>
+				</group>
+			</group>
+
+			<footer>
+				<button name="punch" type="object" string="Punch Challan" class="oe_highlight"/>
+			</footer>
+			
+		</form>
+	</field>
+</record>
+
+<record id="tax_withhold_report_wizard" model="ir.actions.act_window">
+    <field name="name">Punch Challan</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">tax.withold.wizard</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="tax_withhold_report_wizard_form_view"/>
+    <field name="target">new</field> 
+</record>
+
+  <record model="ir.values" id="tax_witholdh">
+      <field name="model_id" ref="tax_withhold_champion.model_tax_withold" />
+      <field name="name">Print From Wizard</field>
+      <field name="key2">client_print_multi</field>
+      <field name="value" eval ="'ir.actions.act_window,'+str(ref('tax_withhold_report_wizard'))"/>
+      <field name="key">action</field>
+      <field name="model">tax.withold</field>         
+</record> 
+
+
+
+<record id="epay_report_wizard_form_view" model="ir.ui.view">
+	<field name="name">epay_report_wizard_form_view</field>
+	<field name="model">epay.wizard</field>
+	<field name="arch" type="xml">
+			<form string="Report">
+					<group name="group_top">
+						<field name="challan_no"/>
+					</group>
+					<footer>
+    					<button name="get_epay" type="object" string="ePayment" class="oe_highlight"/>
+					</footer>
+			</form>
+	</field>
+</record>
+
+<record id="epay_report_wizard" model="ir.actions.act_window">
+    <field name="name">ePayment</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">epay.wizard</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="epay_report_wizard_form_view"/>
+    <field name="target">new</field> 
+</record>
+
+  <record model="ir.values" id="tax_witholdh1">
+      <field name="model_id" ref="tax_withhold_champion.model_tax_withold" />
+      <field name="name">Print From Wizard1</field>
+      <field name="key3">client_print_multi</field>
+      <field name="value" eval ="'ir.actions.act_window,'+str(ref('epay_report_wizard'))"/>
+      <field name="key">action</field>
+      <field name="model">tax.withold</field>         
+  </record> 
+
+
+
+
+
+	<act_window id="action_tax_withold" 
+	name="Tax" 
+	res_model="tax.withold" 
+	view_mode="tree,form" />
+
+	<menuitem id="menu_tax_withold" name="Tax Withholding" parent="account.menu_finance_receivables" action="action_tax_withold" sequence="8"/>
+
+</odoo>
